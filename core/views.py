@@ -852,13 +852,6 @@ def cadastrar_colecionavel(request):
     form = CadastroColecionavelForm(request.POST if request.method == 'POST' else None, request.FILES if request.method == 'POST' else None, initial={'status_privacidade': 'privado', 'modelo': request.GET.get('modelo')})
     if request.method == 'POST' and form.is_valid():
 
-        print("========== DEBUG UPLOAD ==========")
-        print("FILES:", request.FILES)
-        print("FOTOS:", request.FILES.getlist("foto"))
-        print("CLEANED FOTO:", form.cleaned_data.get("foto"))
-        print("==================================")
-
-
         form.save_for_user(request.user)
         return redirect('core:meus_colecionaveis')
     return render(request, 'core/cadastrar_colecionavel.html', {'form': form})

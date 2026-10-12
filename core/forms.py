@@ -112,30 +112,13 @@ class CadastroColecionavelForm(forms.ModelForm):
         item.usuario=user
         item.save()
         if d.get('foto'):
-            print(">>> ENTROU NO BLOCO DE FOTOS")
-
             for ordem, foto in enumerate(d['foto']):
-                print(
-                    ">>> ANTES DE CRIAR IMAGEM:",
-                    foto.name,
-                    foto.size,
-                    foto.content_type
-                )
-
                 imagem = ImagemColecionavel.objects.create(
                     colecionavel_usuario=item,
                     arquivo=foto,
                     ordem_exibicao=ordem,
                     imagem_principal=ordem == 0,
                 )
-
-                print(
-                    ">>> IMAGEM CRIADA:",
-                    imagem.pk,
-                    imagem.arquivo.name,
-                    imagem.url_imagem
-                )
-
         elif d.get('imagem_peca'):
             ImagemColecionavel.objects.create(
                 colecionavel_usuario=item,
