@@ -8,18 +8,28 @@ document.addEventListener('DOMContentLoaded',()=>{
   const updatePresetButton=()=>{
     if(savePreset)savePreset.disabled=!form.querySelector('input[name="preset"]:checked');
   };
-  const activate=(mode)=>{
-    type.value=mode;
-    document.querySelectorAll('.dn-mode').forEach(el=>el.classList.toggle('active',el.dataset.mode===mode));
-    document.querySelectorAll('.dn-panel').forEach(el=>el.classList.toggle('active',el.dataset.panel===mode));
-    const isPreset=mode==='predefinido';
-    presetInputs.forEach(input=>{
-      input.required=isPreset;
-      input.disabled=!isPreset;
+  const activate = (mode) => {
+    const selectedMode = mode === 'personalizado' ? 'personalizado' : 'predefinido';
+    type.value = selectedMode;
+
+    document.querySelectorAll('.dn-mode').forEach(el => {
+      el.classList.toggle('active', el.dataset.mode === selectedMode);
     });
-    if(description){
-      description.required=!isPreset;
-      description.disabled=isPreset;
+
+    document.querySelectorAll('.dn-panel').forEach(el => {
+      el.classList.toggle('active', el.dataset.panel === selectedMode);
+    });
+
+    const isPreset = selectedMode === 'predefinido';
+
+    presetInputs.forEach(input => {
+      input.required = isPreset;
+      input.disabled = !isPreset;
+    });
+
+    if (description) {
+      description.required = !isPreset;
+      description.disabled = isPreset;
     }
   };
   document.querySelectorAll('.dn-mode').forEach(el=>el.addEventListener('click',()=>activate(el.dataset.mode)));

@@ -12,7 +12,7 @@
   <section data-panel="predefinido" class="dn-panel active"><h2>Escolha um cenário</h2><div class="dn-preset-grid">
     {% for preset in form.fields.preset.queryset %}
       <label class="dn-preset {% if form.preset.value|stringformat:'s' == preset.pk|stringformat:'s' %}selected{% endif %}">
-        <input type="radio" name="preset" value="{{ preset.pk }}" required {% if form.preset.value|stringformat:'s' == preset.pk|stringformat:'s' %}checked{% endif %}>
+        <input type="radio" name="preset" value="{{ preset.pk }}" {% if form.preset.value|stringformat:'s' == preset.pk|stringformat:'s' %}checked{% endif %}>
         <span class="dn-preset-visual"><img src="{% get_static_prefix %}image/dioramas_novo/{{ preset.slug }}.png" alt="Cenário {{ preset.nome }}" loading="lazy"></span>
         <strong>{{ preset.nome }}</strong><small>{{ preset.descricao }}</small>
       </label>
@@ -46,5 +46,5 @@
   </section>
   <div class="dn-actions"><a class="dn-button secondary" href="{% url 'dioramas_novo:selecionar' %}">Voltar</a></div>
 </form>
-<script src="{% static 'js/dioramas_novo.js' %}?v=20261005-1" defer></script>
+<script src="{% static 'js/dioramas_novo.js' %}?v=20261012-2" defer></script>
 {% endblock %}
