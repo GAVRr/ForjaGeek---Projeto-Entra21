@@ -97,8 +97,12 @@ def gerar(request, colecionavel_id):
                 descricao=descricao,
                 prompt_utilizado=preset.prompt_base,
             )
-            diorama.imagem.save(f"{preset.slug}.jpg", imagem_composta, save=False)
             diorama.save()
+            diorama.imagem.save(
+                f"{diorama.pk}-{preset.slug}.jpg",
+                imagem_composta,
+                save=True,
+            )
         messages.success(request, f"O diorama {preset.nome} foi salvo na sua prateleira.")
         return redirect("dioramas_novo:posicionar", pk=diorama.pk)
     try:
