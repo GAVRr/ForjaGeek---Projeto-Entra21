@@ -1,3 +1,5 @@
+import logging
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -19,6 +21,8 @@ from .services.diorama_ai import (
     compor_preset_com_colecionavel,
     gerar_diorama,
 )
+
+logger = logging.getLogger(__name__)
 
 SESSION_PREVIEW = "diorama_novo_preview"
 
@@ -100,8 +104,29 @@ def gerar(request, colecionavel_id):
     try:
         resultado = gerar_diorama(colecionavel, descricao, request.user.pk, preset)
     except (DioramaAIRateLimitError, DioramaAIError) as exc:
+        logger.warning(
+            "Falha conhecida ao gerar diorama: usuario_id=%s colecionavel_id=%s tipo=%s erro=%s",
+            request.user.pk,
+            colecionavel.pk,
+            tipo,
+            type(exc).__name__,
+        )
         messages.error(request, str(exc))
-        return render(request, "dioramas_novo/configurar.html", {"colecionavel": colecionavel, "form": form}, status=503)
+        return render(
+            request,
+            "dioramas_novo/configurar.html",
+            {"colecionavel": colecionavel, "form": form},
+            status=503,
+        )
+    except Exception:
+        logger.exception(
+            "Erro inesperado ao gerar diorama: usuario_id=%s colecionavel_id=%s tipo=%s",
+            request.user.pk,
+            colecionavel.pk,
+            tipo,
+        )
+        raise
+
     anterior = request.session.get(SESSION_PREVIEW) or {}
     anterior_path = caminho_preview(request.user.pk, anterior.get("token"))
     if anterior_path and anterior_path.exists():
