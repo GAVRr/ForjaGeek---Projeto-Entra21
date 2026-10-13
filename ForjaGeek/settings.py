@@ -23,7 +23,7 @@ if load_dotenv:
     # Neste clone, o arquivo .env é a fonte de configuração do projeto.
     # Isso evita que variáveis antigas do Windows apontem o Django para
     # outro banco de dados durante a execução local.
-    load_dotenv(BASE_DIR / ".env", override=True)
+    load_dotenv(BASE_DIR / ".env", override=False)
 
 
 # Quick-start development settings - unsuitable for production
